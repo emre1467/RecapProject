@@ -12,7 +12,7 @@ namespace DataAccess.Concrete.NewFolder
 {
     public class EfCarDal : ICarDal
     {
-        public void Add(Car entity)
+        public void Add(Car entity) // gönderilen car nesnesini context aracılığı ile veritabanına kaydeder
         {
             using (CarContext context=new CarContext())
             {
@@ -22,7 +22,7 @@ namespace DataAccess.Concrete.NewFolder
             }
         }
 
-        public void Delete(Car entity)
+        public void Delete(Car entity) //gönderilen car nesnesini context aracılığı ile veritabanına kaydeder
         {
             using (CarContext context = new CarContext())
             {
@@ -40,9 +40,9 @@ namespace DataAccess.Concrete.NewFolder
             }
         }
 
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)// carmanager tarafından çağrılır.Boş da olabilir özel veri de istenebilir
         {
-            using (CarContext context=new CarContext() )
+            using (CarContext context=new CarContext() )// database e gider istenilen veriyi listeye çevirip getirir
             {
                 return filter == null ? context.Set<Car>().ToList() :
                     context.Set<Car>().Where(filter).ToList();

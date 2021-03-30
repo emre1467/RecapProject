@@ -12,7 +12,7 @@ namespace Business.Concrete
         ICarDal _carDal;
         public CarManager(ICarDal carDal)
         {
-            _carDal = carDal;
+            _carDal = carDal; // Kullanıcı hangi yöntem ile çalışmak istediğini girer(new EfCarDal())
         }
 
         public void Add(Car car)
@@ -29,12 +29,12 @@ namespace Business.Concrete
 
         public List<Car> GetAll()
         {
-            return _carDal.GetAll();
+            return _carDal.GetAll();  // EfCarDal sınıfına gidip GetAll metodunu çalıştırır
         }
 
         public List<Car> GetCarsByBrandId(int id)
         {
-            return _carDal.GetAll(p => p.BrandId == id);
+            return _carDal.GetAll(p => p.BrandId == id);// EfCarDal sınıfına gidip id si bizim ıd ile aynı olanları bulur.
             
         }
 
