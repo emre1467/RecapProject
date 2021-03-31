@@ -28,6 +28,11 @@ namespace Business.Concrete
             
         }
 
+        public void Delete(Car car)
+        {
+            _carDal.Delete(car);
+        }
+
         public List<Car> GetAll()
         {
             return _carDal.GetAll();  // EfCarDal sınıfına gidip GetAll metodunu çalıştırır
@@ -48,6 +53,10 @@ namespace Business.Concrete
         {
             return _carDal.GetAll(p => p.ColorId == id);
         }
-        
+
+        public void Update(Car car)
+        {
+            _carDal.Update(car);
+        }
     }
 }

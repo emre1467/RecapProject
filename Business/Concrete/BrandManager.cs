@@ -14,9 +14,25 @@ namespace Business.Concrete
         {
             _branddal = brandDal;
         }
+
+        public void Add(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Brand> GetAll()
         {
             return _branddal.GetAll();
+        }
+
+        public void Update(Car car)
+        {
+            throw new NotImplementedException();
         }
     }
 }
