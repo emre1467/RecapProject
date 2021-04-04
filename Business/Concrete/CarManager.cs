@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -16,47 +18,56 @@ namespace Business.Concrete
             _carDal = carDal; // Kullanıcı hangi yöntem ile çalışmak istediğini girer(new EfCarDal())
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if(car.DailyPrice>0 && car.Description.Length > 2)
             {
-                Console.WriteLine("Arac Eklendi");
                 _carDal.Add(car);
+                return new SuccessResult(Messages.CarAdded);
+
             }
             else
-                Console.WriteLine("araba eklenmedi");
-            
+            {
+                return new ErrorResult(Messages.CarPriceInvalid);
+
+            }
+
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult("silindi");
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();  // EfCarDal sınıfına gidip GetAll metodunu çalıştırır
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),"ürünler listelendi");  // EfCarDal sınıfına gidip GetAll metodunu çalıştırır
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        
+
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), "dto");
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return _carDal.GetAll(p => p.BrandId == id);// EfCarDal sınıfına gidip id si bizim ıd ile aynı olanları bulur.
+            return new SuccessDataResult<List<Car>>( _carDal.GetAll(p => p.BrandId == id));// EfCarDal sınıfına gidip id si bizim ıd ile aynı olanları bulur.
             
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetAll(p => p.ColorId == id);
+            return new SuccessDataResult<List<Car>>( _carDal.GetAll(p => p.ColorId == id));
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
+            
             _carDal.Update(car);
+            return new SuccessResult("güncellendi");
         }
     }
 }
