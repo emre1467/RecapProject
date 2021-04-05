@@ -1,5 +1,4 @@
 ﻿using Business.Concrete;
-using DataAccess.Concrete;
 using DataAccess.Concrete.EFramework;
 using DataAccess.Concrete.NewFolder;
 using Entities.Concrete;
@@ -12,10 +11,33 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarTest();
+            //CarTest();
             //ColorTest();
             //BrandDal();
+            //UsersTest();
+            //CustomersTest();
+            //Rentals rentals1 = new Rentals { Id=5,CarId = 5, CustomersId = 5, RentDate = "2012",ReturnDate= "2018" };
+            //RentalsManager rentalsManager = new RentalsManager(new EfRentalsDal());
+            //rentalsManager.Add(rentals1);
             
+        }
+
+        private static void CustomersTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomersDal());
+            foreach (var customers in customerManager.GetAll().Data)
+            {
+                Console.WriteLine(customers.CompanyName);
+            }
+        }
+
+        private static void UsersTest()
+        {
+            UsersManager usersManager = new UsersManager(new EfUsersDal());
+            foreach (var users in usersManager.GetAll().Data)
+            {
+                Console.WriteLine(users.FirstName);
+            }
         }
 
         private static void BrandDal()

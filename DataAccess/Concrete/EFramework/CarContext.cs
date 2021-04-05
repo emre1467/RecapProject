@@ -17,7 +17,8 @@ namespace DataAccess.Concrete.EFramework
         public DbSet<Car> Table { get; set; }
         public DbSet<Color> Colorr { get; set; }
         public DbSet<Brand> Brand { get; set; }
-
-
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Customers> Customers { get; set; }
+        public DbSet<Rentals> Rentals { get; set; }
     }
 }
