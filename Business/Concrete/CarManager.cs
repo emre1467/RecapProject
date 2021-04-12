@@ -1,9 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,25 +18,23 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
-        public CarManager(ICarDal carDal)
+        IColorService _colorService;
+        public CarManager(ICarDal carDal,IColorService colorService)
         {
             _carDal = carDal; // Kullanıcı hangi yöntem ile çalışmak istediğini girer(new EfCarDal())
+            _colorService =colorService;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if(car.DailyPrice>0 && car.Description.Length > 2)
+            IResult result= BusinessRules.Run(CheckIfCarCountOfColorCorrect(car.ColorId));
+            if (result != null)
             {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.CarAdded);
-
+                return result;
             }
-            else
-            {
-                return new ErrorResult(Messages.CarPriceInvalid);
-
-            }
-
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
         public IResult Delete(Car car)
@@ -69,5 +72,23 @@ namespace Business.Concrete
             _carDal.Update(car);
             return new SuccessResult("güncellendi");
         }
+        private IResult CheckIfCarCountOfColorCorrect(int colorid)
+        {
+            var result = _carDal.GetAll(c=>c.ColorId==colorid).Count;
+            if (result > 15)
+            {
+                return new ErrorResult(Messages.CarCauntOfColorError);
+            }
+            return new SuccessResult();
+        }
+        //private IResult CheckIfColorLimitExceded()
+        //{
+        //    var result = _colorService.GetAll();
+        //    if (result.Data.Count > 15)
+        //    {
+        //        return new ErrorResult(Messages.ColorLimitExceded);
+        //    }
+        //}
+        
     }
 }
